@@ -23,7 +23,6 @@ headers: headers headers
 
 vtype: INT
 | CHAR
-|
 ;
 
 word: vtype WORD
@@ -42,10 +41,9 @@ slist: slist stat
 decl: vtype word ';'
 ;
 
-stat: IF '(' cond ')' block ELSE '{' block '}'
-| word '=' expr ';'
+stat: IF '(' cond ')' block ELSE block
+| WORD '=' expr ';'
 | RETURN expr ';'
-|
 ;
 
 cond: expr L expr
@@ -69,5 +67,5 @@ int main() {
 
 
 void yyerror(const char * msg) {
-	fprintf(stderr, "%s\n", msg);
+	fprintf(stderr, "line %d: %s\n", yylineno, msg);
 }

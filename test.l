@@ -20,7 +20,10 @@ num [0-9]*
 "+"				{ return ADD; }
 "*"				{ return MULTIPLY; }
 [\n]				{ countn++; }
-[ \t]*				{ ; }
+[\t]*				{ ; }
+[ ]*				{ ; }
+\/\/.*				{ ; }
+\/\*(.*\n)*.*\*\/		{ ; }
 {word}				{ return WORD; }
 {num}				{ return NUM; }
 
