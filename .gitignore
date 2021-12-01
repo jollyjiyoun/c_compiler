@@ -1,0 +1,6 @@
+//mac
+*.dSYM
+*.DS_Store
+
+//object files
+*.o
