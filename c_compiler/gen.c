@@ -36,4 +36,5 @@ void generatecode(struct ASTnode *n) {
 	reg = genAST(n);
 	cgprintint(reg);
 	cgpostamble();
+	register_count();
 }

@@ -4,10 +4,17 @@
 
 static int freereg[4];
 static char *reglist[4] = {"%r8", "%r9", "%r10", "%r11"};
+static int used_reg_count[4];
+
 
 // 모든 register 를 사용 가능하다는 flag 붙인다.
 void freeall_registers(void) {
 	freereg[0] = freereg[1] = freereg [2] = freereg[3] = 1;
+}
+
+//register 사용 개수 파악하는 변수 초기화
+void used_reg_init (void) {
+	used_reg_count[0] = used_reg_count[1] = used_reg_count[2] = used_reg_count[3] = 0;
 }
 
 // 사용 가능한 register (flag = 1) 를 찾으면 해당 register의 번호를 반환한다.
@@ -16,6 +23,7 @@ static int alloc_registers(void) {
 	for(int i = 0; i<4; i++) {
 		if (freereg[i]) {
 			freereg[i] = 0;
+			used_reg_count[i] = 1;
 			return i;
 		}
 	}
@@ -43,6 +51,8 @@ static void free_register(int reg) {
 void cgpreamble() {
 	//모든 register를 사용 가능하도록 flag 설정한다.
 	freeall_registers();
+
+	used_reg_init();
 
 	// 함수의 초기화값 print
 	fputs(
@@ -92,8 +102,18 @@ int cgmul(int r1, int r2) {
 //printint 를 호출한다.
 void cgprintint(int r) {
 	fprintf(Outfile, "\tmovq\t%s, %%rdi\n", reglist[r]);
-	fprintf(Outfile, "\tcall\tprintint\n");
+	//fprintf(Outfile, "\tcall\tprintint\n");
 	free_register(r);
 }
 
+//사용된 register 개수 출력
+void register_count() {
+	int reg_count = 0;
+	for(int i=0; i<sizeof(used_reg_count); i++) {
+		if (used_reg_count[i] == 1) {
+			reg_count +=1;
+		}
+	}
 
+	fprintf(Outfile, "\n사용된 register 개수: %d 개\n", reg_count);
+}
