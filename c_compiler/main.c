@@ -15,7 +15,7 @@ static void init() {
 
 // input 파일에서 모든 토큰을 차례로 scan
 // 새 토큰이 있는 동안 해당 토큰의 정보 print
-static void scanfile() {
+/* static void scanfile() {
         struct token T;
 
         while(scan(&T)) {
@@ -24,7 +24,7 @@ static void scanfile() {
                         printf(", value %d", T.intvalue);
                 printf("\n");
         }
-}
+} */
 
 int main(int argc, char *argv[]) {
 
@@ -46,12 +46,25 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
+	
+	// 출력 파일을 생성한다.
+	if ((Outfile = fopen("myProgram.code", "w")) == NULL) {
+		fprintf(stderr, "Unable to create output file:%s\n", strerror(errno));
+		exit(1);
+	}
+
+
 	// 첫번째 토큰값을 가져온다
 	scan(&Token);
 	n = binexpr();
-	printf("Executed binexpr()\n");
+	//printf("Executed binexpr()\n");
 	printf("%d\n", interpretAST(n));
 	
+	generatecode(n);
+
+
+	// 생성을 완료한 assembly output 파일을 닫는다.
+	fclose(Outfile);
 	return 0;
 
 }
