@@ -3,4 +3,15 @@ struct ASTnode *mkastnode(int op, struct ASTnode *left, struct ASTnode *right, i
 struct ASTnode *mkastleaf(int op, int intvalue);
 struct ASTnode *mkastunary(int op, struct ASTnode *left, int intvalue);
 struct ASTnode *binexpr(void);
+
 int interpretAST(struct ASTnode *n);
+void generatecode(struct ASTnode *n);
+
+// register 관련
+void freeall_registers(void);
+void cgpreamble();
+void cgpostamble();
+int cgload(int value);
+int cgadd(int r1, int r2);
+int cgmul(int r1, int r2);
+void cgprintint(int r);
