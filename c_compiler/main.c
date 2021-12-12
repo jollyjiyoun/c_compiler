@@ -28,6 +28,8 @@ static void scanfile() {
 
 int main(int argc, char *argv[]) {
 
+	struct ASTnode *n;
+
 	// input 으로 들어온 arg 개수가 2개가 아닌 경우 비정상 exit
 	if(argc != 2) {
 		fprintf(stderr, "Usage: %s infile\n", argv[0]);
@@ -44,8 +46,12 @@ int main(int argc, char *argv[]) {
 		exit(1);
 	}
 
-	scanfile();
-
+	// 첫번째 토큰값을 가져온다
+	scan(&Token);
+	n = binexpr();
+	printf("Executed binexpr()\n");
+	printf("%d\n", interpretAST(n));
+	
 	return 0;
 
 }

@@ -81,7 +81,7 @@ int scan(struct token *t) {
 	switch (c) {
 		case EOF:
 			// 토큰을 찾지 못한 경우 0 return
-			return 0;
+			return t->token = T_EOF;
 		case '+':
 			t->token = T_PLUS;
 			break;
